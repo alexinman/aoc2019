@@ -23,8 +23,9 @@ class IntCodeComputer
   end
 
   def run
-    self.instruction_pointer = 0
-    while instruction != :halt
+    self.instruction_pointer ||= 0
+    self.waiting = false
+    while !halted? && !waiting
       send(instruction)
     end
     self
@@ -34,7 +35,13 @@ class IntCodeComputer
     memory[addr]
   end
 
+  def halted?
+    instruction == :halt
+  end
+
   private
+
+  attr_accessor :waiting
 
   def instruction
     OpCodes[memory[instruction_pointer] % 100]
@@ -55,7 +62,12 @@ class IntCodeComputer
   end
 
   def read_input
+    if input.nil?
+      self.waiting = true
+      return
+    end
     memory[param_pos(1)] = input
+    self.input = nil
     step(2)
   end
 
