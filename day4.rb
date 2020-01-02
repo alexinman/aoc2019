@@ -6,7 +6,7 @@ def valid_password(password)
 end
 
 min, max = InputReader.read.first.split('-').map(&:to_i)
-puts "Part 1:", (min..max).count(&method(:valid_password))
+puts "Part 1:", (min..max).count(&method(:valid_password)) # 945
 
 def valid_password_v2(password)
   digits = "#{("0".ord-1).chr}#{password}#{("9".ord+1).chr}".split('')
@@ -15,4 +15,4 @@ def valid_password_v2(password)
   cons2.all? { |a, b| a <= b } && cons2.any? { |a, b| a == b } && cons4.any? { |a, b, c, d| a != b && b == c && c != d }
 end
 
-puts "Part 2:", (min..max).count(&method(:valid_password_v2))
+puts "Part 2:", (min..max).count(&method(:valid_password_v2)) # 617
