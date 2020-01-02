@@ -40,7 +40,7 @@ wire2.each do |code|
 end
 
 x, y = @intersections.keys.min_by { |a, b| manhattan_distance(0, 0, a, b) }
-puts "Part 1:", manhattan_distance(0, 0, x, y)
+puts "Part 1:", manhattan_distance(0, 0, x, y) # 627
 
 [wire1, wire2].each do |wire|
   length = 0
@@ -59,4 +59,4 @@ puts "Part 1:", manhattan_distance(0, 0, x, y)
   end
 end
 
-puts "Part 2:", @intersections.values.min
+puts "Part 2:", @intersections.values.min # 13190
