@@ -5,7 +5,7 @@ input = InputReader.read_csv.first.map(&:to_i)
 input[1] = 12
 input[2] = 2
 computer = IntCodeComputer.new(input).run
-puts "Part 1:", computer[0]
+puts "Part 1:", computer[0] # 3716293
 
 noun = nil
 verb = nil
@@ -18,4 +18,4 @@ verb = nil
     verb = v
   end
 end
-puts "Part 2:", 100 * noun + verb
+puts "Part 2:", 100 * noun + verb # 6429
