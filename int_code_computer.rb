@@ -8,18 +8,22 @@ class IntCodeComputer
       6 => :jump_if_false,
       7 => :less_than,
       8 => :equals,
+      9 => :adjust_relative_base,
       99 => :halt
   }.freeze
 
   ParameterModes = {
       position: 0,
-      immediate: 1
+      immediate: 1,
+      relative: 2
   }.freeze
 
-  attr_accessor :memory, :instruction_pointer, :step_value, :input, :output
+  attr_accessor :memory, :instruction_pointer, :step_value, :input, :output, :relative_base
 
   def initialize(memory)
-    self.memory = memory.dup
+    self.memory = Hash[(0..memory.size).zip(memory)]
+    self.memory.default = 0
+    self.relative_base = 0
   end
 
   def run
@@ -96,8 +100,13 @@ class IntCodeComputer
     step(4)
   end
 
+  def adjust_relative_base
+    self.relative_base += param_value(1)
+    step(2)
+  end
+
   def parameter_mode(offset)
-    (memory[instruction_pointer] / (10 ** (offset + 1))) % (10 ** offset)
+    (memory[instruction_pointer] / (10 ** (offset + 1))) % 10
   end
 
   def param_value(offset)
@@ -110,6 +119,8 @@ class IntCodeComputer
       memory[instruction_pointer + offset]
     when ParameterModes[:immediate]
       instruction_pointer + offset
+    when ParameterModes[:relative]
+      memory[instruction_pointer + offset] + relative_base
     else
       raise RuntimeError, 'invalid parameter mode'
     end
