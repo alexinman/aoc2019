@@ -18,7 +18,7 @@ class IntCodeComputer
       relative: 2
   }.freeze
 
-  attr_accessor :memory, :instruction_pointer, :step_value, :input, :output, :relative_base
+  attr_accessor :memory, :instruction_pointer, :input, :output, :relative_base
 
   def initialize(memory)
     self.memory = Hash[(0..memory.size).zip(memory)]
