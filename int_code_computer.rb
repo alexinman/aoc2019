@@ -18,12 +18,13 @@ class IntCodeComputer
       relative: 2
   }.freeze
 
-  attr_accessor :memory, :instruction_pointer, :input, :output, :relative_base
+  attr_accessor :memory, :instruction_pointer, :input, :output, :relative_base, :wait_on_output
 
-  def initialize(memory)
+  def initialize(memory, wait_on_output:false)
     self.memory = Hash[(0..memory.size).zip(memory)]
     self.memory.default = 0
     self.relative_base = 0
+    self.wait_on_output = wait_on_output
   end
 
   def run
@@ -77,6 +78,7 @@ class IntCodeComputer
 
   def write_output
     self.output = param_value(1)
+    self.waiting = self.wait_on_output
     step(2)
   end
 
