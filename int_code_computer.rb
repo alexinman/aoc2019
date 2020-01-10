@@ -18,7 +18,7 @@ class IntCodeComputer
       relative: 2
   }.freeze
 
-  attr_accessor :memory, :instruction_pointer, :input, :output, :relative_base, :wait_on_output
+  attr_accessor :memory, :instruction_pointer, :input, :relative_base, :wait_on_output
 
   def initialize(memory, wait_on_output:false)
     self.memory = Hash[(0..memory.size).zip(memory)]
@@ -44,9 +44,20 @@ class IntCodeComputer
     instruction == :halt
   end
 
+  def waiting_on_input?
+    waiting && instruction == :read_input && input.nil?
+  end
+
+  def output
+    o = @output
+    @output = nil
+    o
+  end
+
   private
 
   attr_accessor :waiting
+  attr_writer :output
 
   def instruction
     OpCodes[memory[instruction_pointer] % 100]
